@@ -209,14 +209,30 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="horario">Horario laboral *</label>
-                        <select id="horario" required>
-                            <option value="">Selecciona</option>
-                            <option value="mañana">Mañana</option>
-                            <option value="tarde">Tarde</option>
-                            <option value="noche">Noche</option>
-                            <option value="rotativo">Rotativo</option>
-                        </select>
+                        <label>Horario laboral * <small>(Selecciona 1-2 opciones)</small></label>
+                        <!-- Changed from select to checkbox group for multiple selection -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="horario" value="mañana">
+                                <span class="checkmark"></span>
+                                Mañana
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="horario" value="tarde">
+                                <span class="checkmark"></span>
+                                Tarde
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="horario" value="noche">
+                                <span class="checkmark"></span>
+                                Noche
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="horario" value="rotativo">
+                                <span class="checkmark"></span>
+                                Rotativo
+                            </label>
+                        </div>
                         <span class="error-message" id="horario-error"></span>
                     </div>
 
@@ -456,36 +472,31 @@
         </div>
     </section>
 
-        <!-- Sección Nosotros -->
+    <!-- Sección Nosotros -->
     <section class="about" id="nosotros">
         <div class="container">
             <div class="section-title">
                 <h2>Nosotros</h2>
                 <p>Conoce más sobre Mealstizaje y nuestra misión</p>
             </div>
-            <div class="about-content">
-                <div class="about-text">
+            <div class="about-content centered-layout">
+                <div class="about-text centered-text">
                     <h3>¿Qué es Mealstizaje?</h3>
-                    <p>Mealstizaje es un proyecto de alimentación saludable que une la idea de <strong>meals</strong> (comidas en español) con <strong>mestizaje</strong>, que representa la fusión y diversidad que nos caracteriza como nicaragüenses.</p>
-                    
-                    <p>Representa la creación de menús personalizados que combinan diferentes estilos, sabores y necesidades nutricionales, adaptados al ritmo de vida de la persona.</p>
+                    <p>Mealstizaje une <strong>meals</strong> (comidas) con <strong>mestizaje</strong> (fusión y diversidad). Creamos menús personalizados que combinan diferentes estilos, sabores y necesidades nutricionales, adaptados al ritmo de vida de cada persona.</p>
                     
                     <h3>Nuestro Enfoque</h3>
-                    <p>El enfoque es ofrecer opciones prácticas, equilibradas y accesibles, que se alejen de la comida ultra procesada y, al mismo tiempo, respondan a objetivos específicos: bajar de peso, controlar enfermedades crónicas o simplemente mantener un estilo de vida más saludable.</p>
+                    <p>Ofrecemos opciones prácticas, equilibradas y accesibles que se alejan de la comida ultra procesada, respondiendo a objetivos específicos: bajar de peso, controlar enfermedades crónicas o mantener un estilo de vida más saludable.</p>
                     
-                    <p class="highlight">En pocas palabras, Mealstizaje es la fusión de salud, sabor y personalización en cada comida.</p>
-                    
-                    <h3>Nuestro Slogan: "FUSIÓN ENTRE CULTURA Y NUTRICIÓN"</h3>
-                    <p>El slogan "Fusión entre cultura y nutrición" refleja la esencia de una propuesta que busca integrar los valores, tradiciones y sabores propios de nuestra cultura con hábitos alimenticios saludables y equilibrados.</p>
-                    
-                    <p>Esta frase representa el compromiso de la marca de promover la cultura nicaragüense a través de la alimentación, enfocándonos al mismo tiempo en el bienestar físico y emocional.</p>
-                    
-                    <p>Al integrar la cultura, se reconoce la riqueza gastronómica y los ingredientes autóctonos que forman parte del patrimonio local. Además, con la nutrición, se impulsa una alimentación consciente, balanceada y adaptada a las necesidades.</p>
-                    
-                    <p>De esta manera, la marca no solo ofrece productos o servicios nutricionales, sino también una experiencia educativa y significativa que honra las raíces y fomenta un estilo de vida saludable sin perder la conexión con la tradición.</p>
+                    <h3>Nuestro Slogan</h3>
+                    <p class="highlight">"Fusión entre Cultura y Nutrición" - Integramos la riqueza gastronómica y tradiciones nicaragüenses con hábitos alimenticios saludables, honrando nuestras raíces mientras fomentamos el bienestar físico y emocional.</p>
                 </div>
-                <div class="about-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-11-04%20at%2010.25.08%20PM-kw9i0sxZYmEIx5xRjRY4bXAqdze55b.jpeg" alt="Mealstizaje - Fusión entre Cultura y Nutrición">
+                
+                <!-- Video placeholder instead of image -->
+                <div class="about-video">
+                    <video controls>
+                        <source src="public/IMG_6457.mp4" type="video/mp4">
+                        Tu navegador no soporta el video.
+                    </video>
                 </div>
             </div>
         </div>
@@ -702,5 +713,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-

@@ -643,7 +643,7 @@ function closeEncuestaModal() {
 // Validar formulario de encuesta
 function validarEncuesta() {
   let isValid = true
-  const campos = ["edad", "sexo", "actividad", "horario"]
+  const campos = ["edad", "sexo", "actividad"]
 
   // Validar campos requeridos
   campos.forEach((campo) => {
@@ -664,6 +664,31 @@ function validarEncuesta() {
       }
     }
   })
+
+  const horariosSeleccionados = document.querySelectorAll('input[name="horario"]:checked')
+  const horariosGroup = document.querySelector('input[name="horario"]')
+    ? document.querySelector('input[name="horario"]').closest(".form-group")
+    : null
+  const horariosError = document.getElementById("horario-error")
+
+  if (horariosSeleccionados.length === 0) {
+    if (horariosGroup) horariosGroup.classList.add("error")
+    if (horariosError) {
+      horariosError.textContent = "Debes seleccionar al menos 1 horario"
+    }
+    isValid = false
+  } else if (horariosSeleccionados.length > 3) {
+    if (horariosGroup) horariosGroup.classList.add("error")
+    if (horariosError) {
+      horariosError.textContent = "Puedes seleccionar máximo 3 horarios"
+    }
+    isValid = false
+  } else {
+    if (horariosGroup) horariosGroup.classList.remove("error")
+    if (horariosError) {
+      horariosError.textContent = ""
+    }
+  }
 
   // Validar objetivo (radio buttons)
   const objetivoSeleccionado = document.querySelector('input[name="objetivo"]:checked')
@@ -824,7 +849,9 @@ if (encuestaForm) {
         ),
         alergias: document.getElementById("alergias").value,
         actividad: document.getElementById("actividad").value,
-        horario: document.getElementById("horario").value,
+        horario: Array.from(document.querySelectorAll('input[name="horario"]:checked')).map(
+          (checkbox) => checkbox.value,
+        ),
         objetivo: document.querySelector('input[name="objetivo"]:checked').value,
         perfil: localStorage.getItem("perfilSeleccionado"),
       }
@@ -860,6 +887,36 @@ if (document.querySelectorAll("#encuesta-form input, #encuesta-form select").len
         if (formGroup) formGroup.classList.remove("error")
         if (errorElement) {
           errorElement.textContent = ""
+        }
+      }
+    })
+  })
+}
+
+const horariosCheckboxes = document.querySelectorAll('input[name="horario"]')
+if (horariosCheckboxes.length > 0) {
+  horariosCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const horariosSeleccionados = document.querySelectorAll('input[name="horario"]:checked')
+      const horariosGroup = this.closest(".form-group")
+      const horariosError = document.getElementById("horario-error")
+
+      if (horariosSeleccionados.length === 0) {
+        if (horariosGroup) horariosGroup.classList.add("error")
+        if (horariosError) {
+          horariosError.textContent = "Debes seleccionar al menos 1 horario"
+        }
+      } else if (horariosSeleccionados.length > 2) {
+        if (horariosGroup) horariosGroup.classList.add("error")
+        if (horariosError) {
+          horariosError.textContent = "Puedes seleccionar máximo 2 horarios"
+        }
+        // Desmarcar el checkbox que acaba de seleccionarse para mantener el límite
+        this.checked = false
+      } else {
+        if (horariosGroup) horariosGroup.classList.remove("error")
+        if (horariosError) {
+          horariosError.textContent = ""
         }
       }
     })
