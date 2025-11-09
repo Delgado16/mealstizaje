@@ -274,6 +274,17 @@ if (mobileMenuBtn && navMenu) {
   mobileMenuBtn.addEventListener("click", () => {
     navMenu.classList.toggle("show")
   })
+
+  const navLinks = document.querySelectorAll("nav ul > li > a")
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      const hasSubmenu = this.parentElement.querySelector(".submenu")
+      // Only close on desktop or if no submenu
+      if (window.innerWidth > 768 || !hasSubmenu) {
+        navMenu.classList.remove("show")
+      }
+    })
+  })
 }
 
 // Toggle category options
@@ -356,6 +367,15 @@ window.addEventListener("click", (event) => {
   }
   if (confirmationModal && event.target === confirmationModal) {
     confirmationModal.style.display = "none"
+  }
+
+  // Close nav menu and submenus when clicking outside
+  if (navMenu && mobileMenuBtn && !navMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+    navMenu.classList.remove("show")
+    const allSubmenus = document.querySelectorAll("nav .submenu")
+    allSubmenus.forEach((submenu) => {
+      submenu.style.display = "none"
+    })
   }
 })
 
@@ -556,7 +576,7 @@ ${instrucciones ? `*Instrucciones especiales:* ${instrucciones}%0A` : ""}%0A
 
       // Abrir WhatsApp después de un breve retraso
       setTimeout(() => {
-        const whatsappNumber = "+50584757408"
+        const whatsappNumber = "+50582053484"
         const url = `https://wa.me/${whatsappNumber}?text=${mensaje}`
         window.open(url, "_blank")
       }, 1500)
@@ -677,10 +697,10 @@ function validarEncuesta() {
       horariosError.textContent = "Debes seleccionar al menos 1 horario"
     }
     isValid = false
-  } else if (horariosSeleccionados.length > 3) {
+  } else if (horariosSeleccionados.length > 2) {
     if (horariosGroup) horariosGroup.classList.add("error")
     if (horariosError) {
-      horariosError.textContent = "Puedes seleccionar máximo 3 horarios"
+      horariosError.textContent = "Puedes seleccionar máximo 2 horarios"
     }
     isValid = false
   } else {
@@ -923,13 +943,6 @@ if (horariosCheckboxes.length > 0) {
   })
 }
 
-// Cerrar modal al hacer clic fuera
-window.addEventListener("click", (event) => {
-  if (encuestaModal && event.target === encuestaModal) {
-    closeEncuestaModal()
-  }
-})
-
 // Mobile submenu toggle
 if (window.innerWidth <= 768) {
   const menuItemsWithSubmenu = document.querySelectorAll("nav ul li:has(.submenu)")
@@ -949,6 +962,18 @@ if (window.innerWidth <= 768) {
           }
         })
       }
+    })
+
+    const submenuLinks = document.querySelectorAll("nav .submenu a")
+    submenuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("show")
+
+        const allSubmenus = document.querySelectorAll("nav .submenu")
+        allSubmenus.forEach((submenu) => {
+          submenu.style.display = "none"
+        })
+      })
     })
   }
 }
