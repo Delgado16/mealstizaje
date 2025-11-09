@@ -25,9 +25,8 @@ const verPlatillosBtn = document.getElementById("ver-platillos-btn")
 // Variables para los menús
 const menuSeccionActual = document.getElementById("menus-personalizados")
 let categoriaActual = "desayuno"
-let perfilActual = ""
+let perfilActual = "" // Changed from const to let to allow reassignment
 
-// Datos de los menús por perfil - CORREGIDOS
 const menusData = {
   diabetico: {
     nombre: "Diabético",
@@ -202,6 +201,72 @@ const menusData = {
   },
 }
 
+function cargarMenu(perfil, categoria) {
+  const menu = menusData[perfil][categoria]
+  const perfilInfo = menusData[perfil]
+
+  const categoriaTitulos = {
+    desayuno: "Desayuno",
+    "merienda-manana": "Merienda de la Mañana",
+    almuerzo: "Almuerzo",
+    "merienda-tarde": "Merienda de la Tarde",
+    cena: "Cena",
+  }
+
+  // Actualizar título y calorías con información del perfil
+  if (document.getElementById("menu-category-title")) {
+    document.getElementById("menu-category-title").textContent = `${categoriaTitulos[categoria]} - ${perfilInfo.nombre}`
+  }
+  if (document.getElementById("menu-calories")) {
+    document.getElementById("menu-calories").textContent =
+      `${menu.calorias} (Total diario: ${perfilInfo.totalCalorias})`
+  }
+
+  const menuItemsContainer = document.getElementById("menu-items")
+  if (menuItemsContainer) {
+    menuItemsContainer.innerHTML = ""
+
+    menu.items.forEach((item) => {
+      const menuItem = document.createElement("div")
+      menuItem.className = "menu-item"
+      menuItem.innerHTML = `<p>${item}</p>`
+      menuItemsContainer.appendChild(menuItem)
+    })
+  }
+
+  // Actualizar categoría actual
+  categoriaActual = categoria
+}
+
+function updateMenuOrderSummary() {
+  const menu = menusData[perfilActual][categoriaActual]
+  const perfilInfo = menusData[perfilActual]
+
+  const categoriaTitulos = {
+    desayuno: "Desayuno",
+    "merienda-manana": "Merienda de la Mañana",
+    almuerzo: "Almuerzo",
+    "merienda-tarde": "Merienda de la Tarde",
+    cena: "Cena",
+  }
+
+  const summaryItems = document.getElementById("summary-items")
+  if (summaryItems) {
+    let itemsHTML = `<div class="summary-header">
+      <strong>${perfilInfo.nombre} - ${categoriaTitulos[categoriaActual]}</strong>
+      <small>${menu.calorias} (Total: ${perfilInfo.totalCalorias})</small>
+    </div>`
+
+    if (menu.items) {
+      menu.items.forEach((item) => {
+        itemsHTML += `<span class="summary-item">🍽️ ${item}</span>`
+      })
+    }
+
+    summaryItems.innerHTML = itemsHTML
+  }
+}
+
 // ========== FUNCIONALIDAD GENERAL ==========
 
 // Toggle mobile menu
@@ -230,7 +295,7 @@ function updatePlatePreview() {
 
   const plateItems = document.querySelector(".plate-items")
   if (plateItems) {
-    plateItems.innerHTML = `
+    plateItems.innerHTML = ` 
             ${base ? `<span class="plate-item">${formatOption(base.value)}</span>` : ""}
             ${proteina ? `<span class="plate-item">${formatOption(proteina.value)}</span>` : ""}
             ${guarnicion ? `<span class="plate-item">${formatOption(guarnicion.value)}</span>` : ""}
@@ -349,7 +414,7 @@ function updateOrderSummary() {
 
   const summaryItems = document.getElementById("summary-items")
   if (summaryItems) {
-    summaryItems.innerHTML = `
+    summaryItems.innerHTML = ` 
             ${base ? `<span class="summary-item">${formatOption(base.value)}</span>` : ""}
             ${proteina ? `<span class="summary-item">${formatOption(proteina.value)}</span>` : ""}
             ${guarnicion ? `<span class="summary-item">${formatOption(guarnicion.value)}</span>` : ""}
@@ -693,48 +758,6 @@ function mostrarSeccionMenus() {
   }, 500)
 }
 
-// Cargar menú específico con información del perfil
-function cargarMenu(perfil, categoria) {
-  const menu = menusData[perfil][categoria]
-  const perfilInfo = menusData[perfil]
-
-  const categoriaTitulos = {
-    desayuno: "Desayuno",
-    "merienda-manana": "Merienda de la Mañana",
-    almuerzo: "Almuerzo",
-    "merienda-tarde": "Merienda de la Tarde",
-    cena: "Cena",
-  }
-
-  // Actualizar título y calorías con información del perfil
-  if (document.getElementById("menu-category-title")) {
-    document.getElementById("menu-category-title").textContent = `${categoriaTitulos[categoria]} - ${perfilInfo.nombre}`
-  }
-  if (document.getElementById("menu-calories")) {
-    document.getElementById("menu-calories").textContent =
-      `${menu.calorias} (Total diario: ${perfilInfo.totalCalorias})`
-  }
-
-  // Cargar items del menú
-  const menuItemsContainer = document.getElementById("menu-items")
-  if (menuItemsContainer) {
-    menuItemsContainer.innerHTML = ""
-
-    menu.items.forEach((item, index) => {
-      const menuItem = document.createElement("div")
-      menuItem.className = "menu-item"
-      menuItem.innerHTML = `
-                <h4>${item.split("(")[0].trim()}</h4>
-                <p>${item}</p>
-            `
-      menuItemsContainer.appendChild(menuItem)
-    })
-  }
-
-  // Actualizar categoría actual
-  categoriaActual = categoria
-}
-
 // Event listeners para categorías de menú
 function setupMenuCategories() {
   const menuCategories = document.querySelectorAll(".menu-category")
@@ -761,35 +784,6 @@ function enviarMenuWhatsApp() {
   updateMenuOrderSummary()
   modal.style.display = "flex"
   document.body.style.overflow = "hidden"
-}
-
-function updateMenuOrderSummary() {
-  const menu = menusData[perfilActual][categoriaActual]
-  const perfilInfo = menusData[perfilActual]
-
-  const categoriaTitulos = {
-    desayuno: "Desayuno",
-    "merienda-manana": "Merienda de la Mañana",
-    almuerzo: "Almuerzo",
-    "merienda-tarde": "Merienda de la Tarde",
-    cena: "Cena",
-  }
-
-  const summaryItems = document.getElementById("summary-items")
-  if (summaryItems) {
-    let itemsHTML = `<div class="summary-header">
-      <strong>${perfilInfo.nombre} - ${categoriaTitulos[categoriaActual]}</strong>
-      <small>${menu.calorias} (Total: ${perfilInfo.totalCalorias})</small>
-    </div>`
-
-    if (menu.items) {
-      menu.items.forEach((item) => {
-        itemsHTML += `<span class="summary-item">🍽️ ${item}</span>`
-      })
-    }
-
-    summaryItems.innerHTML = itemsHTML
-  }
 }
 
 // Event Listeners para la encuesta
